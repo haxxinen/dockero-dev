@@ -1,0 +1,88 @@
+version: '3'
+
+services:
+
+  # ALPINE BASE IMAGE
+  base:
+    image: haxxinen/alpine_base
+    container_name: base
+    build: 
+      context: ./alpine_base
+      args:
+        - INSTALL_SSH=1
+        - SSH_USER=noroot
+        - SSH_PASS=noroot
+    ports:
+       - "2220:22"
+    volumes:
+       - ./alpine_base/configs/supervisord.conf:/etc/supervisord.conf
+
+
+  # NGINX CONTAINER
+  nginx:
+    image: haxxinen/alpine_nginx
+    container_name: nginx
+    build:
+      context: ./alpine_nginx
+      args:
+        - NGINX_VERSION=latest
+    ports:
+      - '8080:80'
+      - '8443:443'
+    volumes:
+      - ./alpine_nginx/configs/supervisord.conf:/etc/supervisord.conf
+      - ./alpine_nginx/configs/nginx_srv.conf:/etc/nginx/conf/nginx.conf
+      - ./alpine_nginx/configs/apps/php-fpm.conf:/etc/nginx/sites-enabled/default
+      - ./alpine_nginx/ssl/default.pem:/etc/nginx/ssl/default.pem
+
+      # APP FOLDER
+      - /mnt/myapp:/var/www/webroot
+    networks:
+      - code-network
+
+
+  # PHP-FPM CONTAINER
+  php_fpm:
+    image: haxxinen/alpine_php-fpm
+    container_name: php-fpm
+    build:
+      context: ./alpine_php-fpm
+      args:
+        # WEB APP ROOT DIR
+        - DIR_WEBROOT=/var/www/webroot
+    ports:
+      - '2221:22'
+      - '9000:9000'
+    volumes:
+      - ./alpine_php-fpm/configs/supervisord.conf:/etc/supervisord.conf
+      - ./alpine_php-fpm/configs/php-fpm.conf:/etc/php7/php-fpm.conf
+      - ./alpine_php-fpm/configs/php.ini:/etc/php7/php.ini
+
+      # WEB APP ROOT DIR (LOCAL_PATH:CONTAINER_PATH)
+      - /mnt/myapp:/var/www/webroot
+    networks:
+      - code-network
+
+
+  # MYSQL CONTAINER
+  mysql:
+    image: haxxinen/alpine_mysql
+    container_name: mysql
+    build:
+      context: ./alpine_mysql
+      args:
+        - DB_NAME=app_db
+        - DB_APP_USER=app_user
+        - DB_APP_PASS=zP%OP"7Kj
+        - DB_ROOT_PASS=h6X#lGuu
+    ports:
+       - '3306:3306'
+    volumes:
+      - ./alpine_mysql/configs/supervisord.conf:/etc/supervisord.conf
+      - /mnt/myapp/persistent:/var/lib/mysql
+    networks:
+       - code-network
+
+networks:
+    code-network:
+        driver: bridge
