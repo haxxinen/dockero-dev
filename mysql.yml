@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+
+  # ALPINE BASE IMAGE
+  base:
+    image: haxxinen/alpine_base
+    container_name: base
+    build: 
+      context: ./alpine_base
+      args:
+        - INSTALL_SSH=1
+        - SSH_USER=noroot
+        - SSH_PASS=noroot
+    ports:
+       - "2220:22"
+    volumes:
+       - ./alpine_base/configs/supervisord.conf:/etc/supervisord.conf
+
+  # MYSQL CONTAINER
+  mysql:
+    image: haxxinen/alpine_mysql
+    container_name: mysql
+    build:
+      context: ./alpine_mysql
+      args:
+        - DB_NAME=app_db
+        - DB_APP_USER=app_user
+        - DB_APP_PASS=h6X#lGu1
+        - DB_ROOT_PASS=h6X#lGu2
+    ports:
+       - '3306:3306'
+    volumes:
+      - ./alpine_mysql/configs/supervisord.conf:/etc/supervisord.conf
+      - ./alpine_mysql/configs/my.cnf:/etc/my.cnf
+      
+      # PERSISTENCY FOLDER
+      - /mnt/app_db:/var/lib/mysql/app_db:rw
+      
+    networks:
+       - code-network
+
+networks:
+    code-network:
+        driver: bridge
