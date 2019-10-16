@@ -73,13 +73,18 @@ services:
       args:
         - DB_NAME=app_db
         - DB_APP_USER=app_user
-        - DB_APP_PASS=zP%OP"7Kj
-        - DB_ROOT_PASS=h6X#lGuu
+        - DB_APP_PASS=h6X#lGu1
+        - DB_ROOT_PASS=h6X#lGu2
     ports:
-       - '3306:3306'
+      - '3306:3306'
     volumes:
       - ./alpine_mysql/configs/supervisord.conf:/etc/supervisord.conf
-      - /mnt/myapp/persistent:/var/lib/mysql
+      - ./alpine_mysql/configs/my.cnf:/etc/my.cnf
+
+      # WEB APP PERSISTENCY
+      - /mnt/app_db:/var/lib/mysql/app_db:rw
+
+    # DOCKER LAN
     networks:
        - code-network
 
