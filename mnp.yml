@@ -36,7 +36,7 @@ services:
       - ./alpine_nginx/ssl/default.pem:/etc/nginx/ssl/default.pem
 
       # APP FOLDER
-      - /mnt/myapp:/var/www/webroot
+      - /mnt/myapp/webroot:/var/www/webroot
     networks:
       - code-network
 
@@ -55,11 +55,13 @@ services:
       - '9000:9000'
     volumes:
       - ./alpine_php-fpm/configs/supervisord.conf:/etc/supervisord.conf
-      - ./alpine_php-fpm/configs/php-fpm.conf:/etc/php7/php-fpm.conf
       - ./alpine_php-fpm/configs/php.ini:/etc/php7/php.ini
 
+      # APP CONFIG
+      - ./alpine_php-fpm/configs/php-fpm.conf:/etc/php7/php-fpm.conf
+
       # WEB APP ROOT DIR (LOCAL_PATH:CONTAINER_PATH)
-      - /mnt/myapp:/var/www/webroot
+      - /mnt/myapp/webroot:/var/www/webroot
     networks:
       - code-network
 
