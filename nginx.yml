@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+
+  # ALPINE BASE IMAGE
+  base:
+    image: haxxinen/alpine_base
+    container_name: base
+    build: 
+      context: ./alpine_base
+      args:
+        - INSTALL_SSH=1
+        - SSH_USER=noroot
+        - SSH_PASS=noroot
+    ports:
+       - "2220:22"
+    volumes:
+       - ./alpine_base/configs/supervisord.conf:/etc/supervisord.conf
+
+  # NGINX CONTAINER
+  nginx:
+    image: haxxinen/alpine_nginx
+    container_name: nginx
+    build:
+      context: ./alpine_nginx
+      args:
+        - NGINX_VERSION=latest
+    ports:
+      - '8080:80'
+      - '8443:443'
+    volumes:
+      - ./alpine_nginx/configs/supervisord.conf:/etc/supervisord.conf
+      - ./alpine_nginx/configs/nginx_srv.conf:/etc/nginx/conf/nginx.conf
+      - ./alpine_nginx/ssl/default.pem:/etc/nginx/ssl/default.pem
+
+      # APP CONFIG
+      - ./alpine_nginx/configs/apps/default.conf:/etc/nginx/sites-enabled/default
+
+      # APP FOLDER
+      - /mnt/myapp/webroot:/var/www/webroot
+    networks:
+      - code-network
+
+
+networks:
+    code-network:
+        driver: bridge
