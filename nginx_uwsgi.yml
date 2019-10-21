@@ -1,0 +1,74 @@
+version: '3'
+
+services:
+
+  # ALPINE BASE IMAGE
+  base:
+    image: haxxinen/alpine_base
+    container_name: base
+    build: 
+      context: ./alpine_base
+      args:
+        - INSTALL_SSH=1
+        - SSH_USER=noroot
+        - SSH_PASS=noroot
+    ports:
+       - "2220:22"
+    volumes:
+       - ./alpine_base/configs/supervisord.conf:/etc/supervisord.conf
+
+
+  # UWSGI CONTAINER
+  uwsgi:
+    image: haxxinen/alpine_uwsgi
+    container_name: uwsgi
+    build:
+      context: ./alpine_uwsgi
+      args:
+        - DIR_WEBROOT=/var/www/app
+        - DEPLOY_SCRIPT=/deploy.sh
+    environment:
+      - DIR_WEBROOT=/var/www/app
+      - PIP_REQUIREMENTS=/var/www/app/requirements.txt
+    ports:
+      - '2221:22'
+      - '5000:5000'
+    volumes:
+      - /tmp/uwsgi:/tmp/uwsgi:rw
+      - ./alpine_uwsgi/configs/supervisord.conf:/etc/supervisord.conf
+      - ./alpine_uwsgi/configs/uwsgi.ini:/etc/uwsgi/uwsgi.ini
+
+      # APP FOLDER - DYNAMIC
+      - /mnt/hgfs/myapp/backend:/var/www/app
+    networks:
+      - code-network
+
+  # NGINX CONTAINER
+  nginx:
+    image: haxxinen/alpine_nginx
+    container_name: nginx
+    build:
+      context: ./alpine_nginx
+      args:
+        - NGINX_VERSION=latest
+    ports:
+      - '8080:80'
+      - '8443:443'
+    volumes:
+      - /tmp/uwsgi:/tmp/uwsgi:rw
+      - ./alpine_nginx/configs/supervisord.conf:/etc/supervisord.conf
+      - ./alpine_nginx/configs/nginx_srv.conf:/etc/nginx/conf/nginx.conf
+      - ./alpine_nginx/ssl/default.pem:/etc/nginx/ssl/default.pem
+
+      # APP CONFIG
+      - ./alpine_nginx/configs/apps/uwsgi.conf:/etc/nginx/sites-enabled/default
+
+      # APP FOLDER - STATIC
+      - /mnt/hgfs/myapp/frontend:/var/www/app
+    networks:
+      - code-network
+
+networks:
+    code-network:
+        driver: bridge
+
