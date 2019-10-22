@@ -35,8 +35,8 @@ services:
       - ./alpine_nginx/configs/apps/php-fpm.conf:/etc/nginx/sites-enabled/default
       - ./alpine_nginx/ssl/default.pem:/etc/nginx/ssl/default.pem
 
-      # APP FOLDER
-      - /mnt/myapp/webroot:/var/www/webroot
+      # APP FOLDER - STATIC
+      - /mnt/hgfs/myapp/frontend:/var/www/webroot/public
     networks:
       - code-network
 
@@ -60,8 +60,8 @@ services:
       # APP CONFIG
       - ./alpine_php-fpm/configs/php-fpm.conf:/etc/php7/php-fpm.conf
 
-      # WEB APP ROOT DIR (LOCAL_PATH:CONTAINER_PATH)
-      - /mnt/myapp/webroot:/var/www/webroot
+      # APP FOLDER - DYNAMIC
+      - /mnt/hgfs/myapp/backend:/var/www/webroot
     networks:
       - code-network
 
@@ -84,7 +84,7 @@ services:
       - ./alpine_mysql/configs/my.cnf:/etc/my.cnf
 
       # WEB APP PERSISTENCY
-      - /mnt/app_db:/var/lib/mysql/app_db:rw
+      - /mnt/hgfs/myapp/database:/var/lib/mysql/app_db:rw
 
     # DOCKER LAN
     networks:
