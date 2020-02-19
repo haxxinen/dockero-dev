@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 apk --update --no-cache add mysql mysql-client
-mysql_install_db --user=mysql --datadir='/var/lib/mysql' >/dev/null
+mysql_install_db --user=mysql --datadir='/var/lib/mysql'
 
 [[ \
 	"$DB_NAME" = "" || \
