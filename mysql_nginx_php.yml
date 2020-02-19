@@ -69,6 +69,7 @@ services:
   # MYSQL CONTAINER
   mysql:
     image: haxxinen/alpine_mysql
+    user: "${UID}:${GID}" # VMware (501:dialout)
     container_name: mysql
     build:
       context: ./alpine_mysql
