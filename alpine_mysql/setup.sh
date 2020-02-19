@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-apk --update --no-cache add mysql mysql-client shadow
+apk --update --no-cache add mysql mysql-client
 mysql_install_db --user=mysql --datadir='/var/lib/mysql' >/dev/null
 
 [[ \
@@ -30,8 +30,7 @@ DROP DATABASE IF EXISTS \`test\`;
 
 EOF
 
-/usr/bin/mysqld --user=root --bootstrap --verbose=0 < $tfile
+/usr/bin/mysqld --user=mysql --bootstrap --verbose=0 < $tfile
 
 rm -f $tfile
-usermod -u 501 mysql
 chown -R mysql:mysql /var/lib/mysql
