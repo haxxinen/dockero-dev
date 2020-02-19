@@ -27,8 +27,8 @@ services:
       args:
         - NGINX_VERSION=latest
     ports:
-      - '8080:80'
-      - '8443:443'
+      - '80:80'
+      - '443:443'
     volumes:
       - ./alpine_nginx/configs/supervisord.conf:/etc/supervisord.conf
       - ./alpine_nginx/configs/nginx_srv.conf:/etc/nginx/conf/nginx.conf
