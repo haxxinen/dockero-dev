@@ -35,7 +35,7 @@ services:
       - ./alpine_mysql/configs/my.cnf:/etc/my.cnf
       
       # PERSISTENCY FOLDER
-      - /mnt/app_db:/var/lib/mysql/app_db:rw
+      - /mnt/app_db:/var/lib/mysql:rw
       
     networks:
        - code-network
