@@ -84,7 +84,7 @@ services:
       - ./alpine_mysql/configs/my.cnf:/etc/my.cnf
 
       # WEB APP PERSISTENCY
-      - /mnt/hgfs/myapp/database:/var/lib/mysql/app_db:rw
+      - /mnt/hgfs/myapp/database:/var/lib/mysql:rw
 
     # DOCKER LAN
     networks:
