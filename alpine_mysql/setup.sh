@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-apk --update --no-cache add mysql mysql-client
+apk --update --no-cache add mysql mysql-client shadow
 mysql_install_db --user=mysql --datadir='/var/lib/mysql' >/dev/null
 
 [[ \
@@ -33,4 +33,5 @@ EOF
 /usr/bin/mysqld --user=root --bootstrap --verbose=0 < $tfile
 
 rm -f $tfile
+usermod -u 501 mysql
 chown -R mysql:mysql /var/lib/mysql
