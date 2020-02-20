@@ -89,11 +89,6 @@ services:
     networks:
        - code-network
 
-    # DOCKER LAN
-    networks:
-       - code-network
-
-
 networks:
     code-network:
         driver: bridge
