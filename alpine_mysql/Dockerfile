@@ -8,5 +8,7 @@ ARG DB_APP_PASS
 ARG DB_ROOT_PASS
 
 COPY setup.sh /tmp/setup.sh
+COPY init.sh /init.sh
+
 RUN sh /tmp/setup.sh && rm -r /tmp/setup.sh
 CMD ["/usr/bin/supervisord"]

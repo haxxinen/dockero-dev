@@ -21,13 +21,13 @@ services:
   mysql:
     image: haxxinen/alpine_mysql
     container_name: mysql
+    environment:
+      - DB_NAME=app_db
+      - DB_APP_USER=app_user
+      - DB_APP_PASS=h6X#lGu1
+      - DB_ROOT_PASS=h6X#lGu2
     build:
       context: ./alpine_mysql
-      args:
-        - DB_NAME=app_db
-        - DB_APP_USER=app_user
-        - DB_APP_PASS=h6X#lGu1
-        - DB_ROOT_PASS=h6X#lGu2
     ports:
        - '3306:3306'
     volumes:
