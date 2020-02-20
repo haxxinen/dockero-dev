@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-[ -e /var/lib/mysql/mysql ] && echo 'MySQL already initiated!' && exit
+[ -e "/var/lib/mysql/$DB_NAME" ] && echo 'MySQL already initiated!' && exit
 
 [[ \
 	"$DB_NAME" = "" || \
