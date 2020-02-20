@@ -85,7 +85,6 @@ services:
       
       # PERSISTENCY FOLDER
       - /mnt/app_db:/var/lib/mysql:rw
-      
     networks:
        - code-network
 
