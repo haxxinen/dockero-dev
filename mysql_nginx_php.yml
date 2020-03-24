@@ -36,7 +36,7 @@ services:
       - ./alpine_nginx/ssl/default.pem:/etc/nginx/ssl/default.pem
 
       # APP FOLDER - STATIC
-      - /mnt/hgfs/myapp/frontend:/var/www/webroot/public
+      - ${FRONTEND}:/var/www/webroot/public
     networks:
       - code-network
 
@@ -61,7 +61,7 @@ services:
       - ./alpine_php-fpm/configs/php-fpm.conf:/etc/php7/php-fpm.conf
 
       # APP FOLDER - DYNAMIC
-      - /mnt/hgfs/myapp/backend:/var/www/webroot
+      - ${BACKEND}:/var/www/webroot
     networks:
       - code-network
 
@@ -71,10 +71,10 @@ services:
     image: haxxinen/alpine_mysql
     container_name: mysql
     environment:
-      - DB_NAME=app_db
-      - DB_APP_USER=app_user
-      - DB_APP_PASS=h6X#lGu1
-      - DB_ROOT_PASS=h6X#lGu2
+      - DB_NAME=${DB_NAME}
+      - DB_APP_USER=${DB_APP_USER}
+      - DB_APP_PASS=${DB_APP_PASS}
+      - DB_ROOT_PASS=${DB_ROOT_PASS}
     build:
       context: ./alpine_mysql
     ports:
@@ -84,7 +84,7 @@ services:
       - ./alpine_mysql/configs/my.cnf:/etc/my.cnf
       
       # PERSISTENCY FOLDER
-      - /mnt/app_db:/var/lib/mysql:rw
+      - ${DATABASE}:/var/lib/mysql:rw
     networks:
        - code-network
 
