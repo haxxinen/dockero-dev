@@ -8,7 +8,6 @@ user=`whoami`
 [[ $user != 'root' ]] && echo 'Not root.' && exit
 
 # local vars
-arch=`arch`; arch=`echo "${arch: -2}"`
 pwd=`pwd`
 tmp='/tmp/'$RANDOM
 jdk_path='/opt/JDK/'
@@ -28,7 +27,10 @@ download_page=`curl -sSL "$downloads/index.html" \
 pattern="download.oracle.com/otn-pub/java/jdk.*\.tar\.gz"
 
 latest="$site$download_page"
-link=$(curl -sSL $latest | grep -oE $pattern | grep linux | awk '{print $1}' | tr -d "'")
+
+link=''
+[[ `arch` == 'x86_64' ]] && link=$(curl -sSL $latest | grep -oE $pattern | grep linux | awk '{print $1}' | tr -d "'" | grep 'x64')
+[[ -z $link ]] && link=$(curl -sSL $latest | grep -oE $pattern | grep linux | awk '{print $1}' | tr -d "'" | grep -v 'x64')
 
 [ -z $link ] && echo '[+] Link not available' && exit
 echo "[+] Downloading ..."
