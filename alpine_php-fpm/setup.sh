@@ -17,7 +17,7 @@ apk --update --no-cache add \
 	php8-intl \
 	php8-json \
 	php8-mbstring \
-	php8-mcrypt \
+	php8-pecl-mcrypt \
 	php8-mysqli \
 	php8-mysqlnd \
 	php8-odbc \
@@ -39,7 +39,6 @@ apk --update --no-cache add \
 	php8-xdebug \
 	php8-xml \
 	php8-xmlreader \
-	php8-xmlrpc \
 	php8-xmlwriter \
 	php8-zip
 
