@@ -55,10 +55,10 @@ services:
       - '9000:9000'
     volumes:
       - ./alpine_php-fpm/configs/supervisord.conf:/etc/supervisord.conf
-      - ./alpine_php-fpm/configs/php.ini:/etc/php7/php.ini
+      - ./alpine_php-fpm/configs/php.ini:/etc/php8/php.ini
 
       # APP CONFIG
-      - ./alpine_php-fpm/configs/php-fpm.conf:/etc/php7/php-fpm.conf
+      - ./alpine_php-fpm/configs/php-fpm.conf:/etc/php8/php-fpm.conf
 
       # APP FOLDER - DYNAMIC
       - ${BACKEND}:/var/www/webroot
