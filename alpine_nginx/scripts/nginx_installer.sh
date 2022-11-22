@@ -40,7 +40,7 @@ do
    mod_name=`echo $1 | awk -F '/' {'print $NF'}`
    mod_arch=$mod_name'.tar.gz'
 
-   mod=`curl -sSL "https://github.com/$1/tags" | grep -oE "/$1/archive/v.*tar.gz" | head -n 1`
+   mod=`curl -sSL "https://github.com/$1/tags" | grep -oE "/$1/archive/refs/tags/v.*tar.gz" | head -n 1`
    [ -z $mod ] && shift && continue
 
    wget -q 'https://github.com'$mod -O $mod_arch && tar xfz $mod_arch && rm $mod_arch
