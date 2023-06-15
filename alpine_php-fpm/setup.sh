@@ -17,7 +17,6 @@ apk --update --no-cache add \
 	php82-intl \
 	php82-json \
 	php82-mbstring \
-	php82-pecl-mcrypt \
 	php82-mysqli \
 	php82-mysqlnd \
 	php82-odbc \
