@@ -44,4 +44,4 @@ apk --update --no-cache add \
 adduser -D -s /sbin/nologin -h /dev/null -g php-fpm php-fpm
 echo "chdir = $CHDIR" >> /etc/supervisord.conf
 curl -sS https://getcomposer.org/installer | \
-php -- --install-dir=/usr/bin --filename=composer
+php82 -- --install-dir=/usr/bin --filename=composer
